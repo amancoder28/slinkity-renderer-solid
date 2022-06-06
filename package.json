@@ -1,0 +1,34 @@
+{
+  "name": "@slinkity/renderer-solid",
+  "version": "1.0.0",
+  "description": "Solid component renderer for the legendary 11ty tool, Slinkity",
+  "main": "index.js",
+  "type": "module",
+  "files": [
+    "client.js",
+    "server.js",
+    "StaticHtml.js"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "bholmesdev",
+  "license": "ISC",
+  "peerDependencies": {
+    "slinkity": "^0.8.0",
+    "solid-js": "^1.4.3"
+  },
+  "dependencies": {
+    "babel-preset-solid": "^1.4.2",
+    "vite-plugin-solid": "^2.2.6"
+  },
+  "devDependencies": {
+    "solid-js": "^1.4.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/slinkity"
+  }
+}
