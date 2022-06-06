@@ -1,28 +1,25 @@
-// import { createComponent } from "solid-js/web";
-import h from "solid-js/h";
+import { renderToString, ssr, createComponent } from 'solid-js/web';
 
-import { renderToStringAsync, renderToString } from "solid-js/web";
-import StaticHtml from "./StaticHtml";
-
-export default async function server({
-  toCommonJSModule,
-  componentPath,
-  props,
-  children,
-  loader,
-}) {
+function check({ toCommonJSModule, componentPath, props, children }) {
   const Component = await toCommonJSModule(componentPath);
-  const vnode = h(
-    Component.default,
-    { props },
-    h(StaticHtml, { value: children })
+  
+  if (typeof Component !== 'function') return false;
+  const { html } = renderToStaticMarkup(Component, props, children);
+  return typeof html === 'string';
+}
+
+function server({ toCommonJSModule, componentPath, props, children }) {
+  const Component = await toCommonJSModule(componentPath);
+  const html = renderToString(() =>
+    createComponent(Component, {
+      ...props,
+      // In Solid SSR mode, `ssr` creates the expected structure for `children`.
+      // In Solid client mode, `ssr` is just a stub.
+      children: children != null ? ssr(`<astro-fragment>${children}</astro-fragment>`) : children,
+    })
   );
 
-  if (!loader || loader === "none") {
-    const html = await renderToStringAsync(() => vnode);
-    return { html, css: "" };
-  } else {
-    const html = renderToString(() => vnode);
-    return { html, css: "" };
-  }
+  return { html: html, css: "" };
 }
+
+export default { check, server };

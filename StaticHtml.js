@@ -1,18 +1,12 @@
-import h from "solid-js/h";
+import { ssr } from 'solid-js/web';
 
 /**
  * Astro passes `children` as a string of HTML, so we need
- * a wrapper `div` to render that content as h.
- *
- * As a bonus, we can signal to React that this subtree is
- * entirely static and will never change via `shouldComponentUpdate`.
+ * a wrapper `astro-fragment` to render that content as VNodes.
  */
-
-const StaticHtml = ({ value }) => {
-  if (!value) return null;
-  return h("astro-fragment", {
-    value,
-  });
+const StaticHtml = ({ innerHTML }) => {
+	if (!innerHTML) return null;
+	return ssr(`<astro-fragment>${innerHTML}</astro-fragment>`);
 };
 
 export default StaticHtml;
