@@ -4,7 +4,7 @@ function check({ toCommonJSModule, componentPath, props, children }) {
   const Component = await toCommonJSModule(componentPath);
   
   if (typeof Component !== 'function') return false;
-  const { html } = renderToStaticMarkup(Component, props, children);
+  const { html } = server(Component, props, children);
   return typeof html === 'string';
 }
 
